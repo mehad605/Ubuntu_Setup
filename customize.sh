@@ -35,8 +35,14 @@ sudo cp -r Nordic/kde/cursors/Nordic-cursors /usr/share/icons
 sudo mv Nordic /usr/share/themes/
 git clone https://github.com/zayronxio/Zafiro-Nord-Dark
 sudo mv Zafiro-Nord-Dark /usr/share/icons/
-mv $HOME/Ubuntu_Setup/Cappuccin_Wallpapers $HOME/Pictures/Wallpapers/
+mv $HOME/Ubuntu_Setup/Wallpapers/* $HOME/Pictures/Wallpapers/
 mv $HOME/Ubuntu_Setup/Fonts/* $HOME/.local/share/fonts
+sudo find $HOME/Ubuntu_Setup/icons/ -name '*.tar.gz' -exec echo '{}' \; -execdir tar -C /usr/share/icons -xzvf '{}' \;
+sudo find $HOME/Ubuntu_Setup/gtk-themes/ -name '*.tar.gz' -exec echo '{}' \; -execdir tar -C /usr/share/themes -xzvf '{}' \;
+cp $HOME/Ubuntu_Setup/config/neofetch/config.conf $HOME/.config/neofetch
+cp $HOME/Ubuntu_Setup/config/kitty/kitty.conf $HOME/.config/kitty
+cp -r $HOME/Ubuntu_Setup/config/ranger/ $HOME/.config
+
 
 dconf load /org/gnome/ < $HOME/Ubuntu_Setup/gnome_settings.txt
 

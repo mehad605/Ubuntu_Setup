@@ -31,3 +31,5 @@ clang
 cmake
 gnome-sushi
 nautilus-admin
+ranger
+

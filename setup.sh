@@ -243,24 +243,25 @@ sudo systemctl enable syncthing@$USER.service
 sudo systemctl start syncthing@$USER.service
 
 
+
+
+
 #something to do with kvm
 sudo adduser `id -un` kvm
 sudo adduser `id -un` libvirt
-systemctl enable libvirtd
-systemctl start libvirtd
+sudo systemctl enable libvirtd
+sudo systemctl start libvirtd
 
 
 
 #copying zsh files
-wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1xUFw_jJGIj5zl0g80DfF3QJqKUVJ0X5g' -O .zsh.tar.gz
-tar -xzf .zsh.tar.gz
+#wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1xUFw_jJGIj5zl0g80DfF3QJqKUVJ0X5g' -O .zsh.tar.gz
+#tar -xzf .zsh.tar.gz
 cp -r .zsh ~
 cp .zshrc ~
 cd ~/.zsh/autojump/
 ./install.py
 cd ~/Ubuntu_Setup 
-rm .zsh.tar.gz 
-rm -r .zsh
 
 
 #flatpak
@@ -274,6 +275,31 @@ rm platform-tools-latest-linux.zip
 # isntall starship prompt
 curl -sS https://starship.rs/install.sh | sh -s -- -y
 
+#install kitty
+mkdir -p ~/.config/kitty
+curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin  #The binaries will be installed in /home/.local/kitty.app/bin
+sudo ln -s ~/.local/kitty.app/bin/kitty /usr/local/bin/ #create a symlink for it so that we can run it directly using any Terminal
+#Those who don’t want to start the Kitty using the existing terminal can create an Application shortcut using the given commands:
+cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications/
+#To open text and image files in Kitty via FIle manager then also run the given command as well:
+cp ~/.local/kitty.app/share/applications/kitty-open.desktop ~/.local/share/applications/
+
+#Add Icon:
+sed -i "s|Icon=kitty|Icon=/home/$USER/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/.local/share/applications/kitty*.desktop
+sed -i "s|Exec=kitty|Exec=/home/$USER/.local/kitty.app/bin/kitty|g" ~/.local/share/applications/kitty*.desktop
+
+#For Desktop Shortcut:
+cp ~/.local/kitty.app/share/applications/kitty.desktop ~/Desktop
+sed -i "s|Icon=kitty|Icon=/home/$USER/.local/kitty.app/share/icons/hicolor/256x256/apps/kitty.png|g" ~/Desktop/kitty*.desktop
+sed -i "s|Exec=kitty|Exec=/home/$USER/.local/kitty.app/bin/kitty|g" ~/Desktop/kitty*.desktop
+
+#Allow-launching of the shortcut:
+gio set ~/Desktop/kitty*.desktop metadata::trusted true
+chmod a+x ~/Desktop/kitty*.desktop
+
+#setting kitty as the default terminal:
+sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator $(which kitty) 50
+#this gives kitty priority of 50 which is greater than 40 of default gnome-terminal making it the new default terminal
 
 #copy grub-themes folder to Scripts folder
 wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1k7k3fuuXZ5ubh5dAiFySEJlbk1DLeUay' -O Grub-Themes.tar.xz
